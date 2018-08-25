@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Newapp</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- https://stackoverflow.com/questions/50290197/how-to-add-bootstrap-in-angular-6-project -->
+  <!-- npm install bootstrap@4 jquery --save -->
+
+<!--   
+E:\vijay\newapp>ng generate component home --module app
+E:\vijay\newapp>ng generate component aboutus --module app
+E:\vijay\newapp>ng generate component services --module app
+E:\vijay\newapp>ng generate component contactus --module app
+E:\vijay\newapp>ng generate component ourclients --module app
+E:\vijay\newapp>ng generate component ourheadquoter --module app
+
+
+.........json.................
+E:\vijay\newapp>ng generate component postc --module app
+
+1) app.routing.module.ts  for routing path...
+import { PostcComponent } from './postc/postc.component';
+
+const route:Routes=[
+    {path:'demo',component:AppComponent},
+    {path:'home',component:HomeComponent},
+    {path:'aboutus',children:[
+                  {path:"ourclients",component:OurclientsComponent},
+                  {path:"ourheadquoter",component:OurheadquoterComponent},
+    ]},
+    {path:'contactus',component:ContactusComponent},
+    {path:'services',component:ServicesComponent},
+    {path:'Postc',component:PostcComponent}
+]
+
+2) in app.componant.html 
+<li class="nav-item"> <a class="postc" routerLink="postc">Posts&nbsp;&nbsp;  </a></li>
+
+3) post.componant.ts
+ posts=[];
+  constructor() { 
+    {
+      fetch()
+      .then()
+      .then()
+      .catch();
+    }
+  
+  }
+  4) see all post.componant.html
+
+  5) E:\vijay\newapp>ng generate component post --module app
+       5.1) app.routing.module.ts  for routing path...
+       5.2) see post.componant.html
+  6) https://github.com/vijayorcl/myclassproject.github.io.git
+
+git remote add origin https://github.com/vijayorcl/myclassproject.github.io.git
+git push -u origin master
+
+******this comment in git bash**************************
+$ git config --global user.name "vijayorcl"
+$ git config --global user.email "vijay.orcl@gmail.com"
+******for logout*****
+git config --global --unset user.name
+git config --global --unset user.email
+*********************************
+ng build
+cd dist
+cd newapp
+git init
+git add .
+git commit -m "first draft"
+git remote add origin https://github.com/vijayorcl/myclassproject.github.io.git
+git push -u origin master
+then open in          https://vijayorcl.github.io/
+
+******** template example***************
+1) create filder demo file demo.component.ts and  demo.component.scss
+2) check coding in demo.component.ts and and  demo.component.scss
+3) in app.module.ts add **> DemoComponent
+4) add app.component.html **><app-demo></app-demo>
+
+...................services (dependancey injection).......................
+1) ng generate service myservice;
+two file will be generate myservice.serive.spec.ts and myservices.servie.ts
+2) app.module.ts add in poroveiders ....> providers: [MyserviceService],
+    automatice 
+    import { MyserviceService } from './myservice.service'; 
+    above line will come.
+3) you can import in any ts file suppose
+   add in app.component.ts
+   import { MyserviceService } from './myservice.service';
+
+4) add in myservice.service.ts
+   
+  public l_myservice_array =[{name:'vijay',age:21,city:'nagpur'},
+                            {name:'jaya',age:5,city:'katol'}];
+
+myarray() {
+  return this.l_myservice_array;
+}   
+
+
+5) then add in app.comonent.ts
+public mystr : String;
+public myser=[];
+constructor(public ser :MyserviceService) {
+  this.mystr=this.ser.myfun();
+  this.myser=this.ser.myarray();
+  console.log(this.mystr);
+}
+
+6) and then in app.componet.html
+<div  style="text-align:center" >
+  <table>
+    <tr> <th> services NAME </th> <th> services AGE </th> <th>services CITY </th> </tr>
+    <tr *ngFor="let xx of myser">
+      <td>{{ xx.name }}</td>
+      <td>{{ xx.age }}</td>
+      <td>{{ xx.city }}</td>
+    </tr>
+  </table>
+</div>
+......................................
+
+..............edit in array ......................
+
+.........................................
+
+................directive.....................
+1) E:\vijay\newapp>ng g directive mycustom --mod
+      CREATE src/app/mycustom.directive.spec.ts (23
+      CREATE src/app/mycustom.directive.ts (145 byt
+      UPDATE src/app/app.module.ts (1611 bytes)
+2) in mysustom.directive.ts 
+      import { Directive,ElementRef } from '@angular/core';
+3) 
+export class MycustomDirective {
+
+  constructor(custdirect :ElementRef) { 
+    custdirect.nativeElement.style.backgroundColor='red';
+    custdirect.nativeElement.style.color='green';
+
+  }
+
+   ....or you can write ................
+
+   import { Directive,ElementRef, Input } from '@angular/core';
+
+
+@Directive({
+  selector: '[appMycustom]'
+})
+export class MycustomDirective {
+@Input() public mycustom :string;
+@Input() public tcolor :string;
+
+  constructor(private custdirect :ElementRef) { 
+  }
+
+  ngOnInit() {
+    this.custdirect.nativeElement.style.backgroundColor=this.mycustom;
+    this.custdirect.nativeElement.style.color=this.tcolor;
+   
+  }
+
+
+}
+4) 
+<h1 class="myclass3" appMycustom  > This is services example </h1>
+
+or you can write
+
+<h1 class="myclass3" appMycustom tcolor='red' > This is services example </h1>
+.....................................................
+...................directive second example to change color onmouseenter and onmouseleave ......
+1) go to mycustom.directive.ts import HostListener
+
+      import { Directive,ElementRef, Input,HostListener } from '@angular/core';
+
+      @HostListener('mouseenter') onmouseenter()
+      {
+      this.custdirect.nativeElement.style.backgroundColor="yellow";
+      }
+
+      @HostListener('mouseleave') onmouseleave()
+      {
+      this.custdirect.nativeElement.style.backgroundColor="pink";
+      }
+2) and add in app.component.html
+     <h1 class="myclass3" appMycustom ='red' > This is services example </h1>
+
+..................................
+......another example of directive.....................
+E:\vijay\newapp>ng g directive myif --modul
+CREATE src/app/myif.directive.spec.ts (216
+CREATE src/app/myif.directive.ts (137 bytes
+UPDATE src/app/app.module.ts (1680 bytes)
+
+1) in myif.directive.ts 
+import { Directive,ViewContainerRef,TemplateRef,OnInit } from '@angular/core';
+
+@Directive({
+  selector: '[appMyif]'
+})
+export class MyifDirective {
+
+  constructor(private viewvijay: ViewContainerRef,private tempvijayref:TemplateRef<object>) { }
+ngOnInit(){
+  // if you false isbool then appMyif will disappeare
+ const isbool=true; 
+ if (isbool)
+ {
+   this.viewvijay.createEmbeddedView(this.tempvijayref);
+ }
+ else
+ {
+   this.viewvijay.clear();
+ }
+
+}
+}
+
+2) go to app.component.html add selector name appMyif in any place you want
+  <table  *appMyif>
+...................................... for json data show............
+1) in app.module.ts
+import { HttpClientModule } from '@angular/common/http';
+HttpClientModule
+
+2) in myservices.ts
+import { HttpClientModule } from '@angular/common/http';
+export class MyserviceService {
+
+  constructor(private http:HttpClient) {
+    this.http.get('');
+   }
+
+getdata() {
+  return this.http.get("../assets/myjson.json");
+}
+
+3)   in aap.component.ts
+  myarrey3=[];
+  export class AppComponent implements OnInit{
+
+  ....
+ngOnInit () {
+  this.ser.getdata().subscribe((data:any)
+:void=>{
+  this.myarrey3=data});
+}
+}
+
+4) in app.component.html
+
+<h1 class="myclass3" appMycustom ='red' *appMyif> This is json file </h1>
+<div  style="text-align:center" >
+  <table >
+    <tr > <th> json NAME </th> <th> json AGE </th> <th>json cars </th> </tr>
+    <tr *ngFor="let xx of myarrey3">
+      <td>{{ xx.name }}</td>
+      <td>{{ xx.age }}</td>
+      <td>{{ xx.cars }}</td>
+    </tr>
+  </table>
+</div>
+
+......................................................
+.........fetch data with observable......................................
+1) E:\vijay\newapp>ng generate service servicedata
+CREATE src/app/servicedata.service.spec.ts (404 by
+CREATE src/app/servicedata.service.ts (140 bytes)
+
+2) then check servicedata.service.ts
+2) app.module.ts
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule
+3) create and check biodata.ts
+4) app.component.ts
+add 
+
+public showBiodata=[];
+public showerror:any;
+
+
+constructor(private bioser:ServicedataService) {
+
+and in ngonit...
+  ngOnInit () {
+    this.bioser.biodata().subscribe(
+    data=>this.showBiodata=data,
+    error=>this.showerror=error);
+} 
+
+
+ -->   
+
+</head>
+<body>
+  <app-root></app-root>
+<script type="text/javascript" src="runtime.js"></script><script type="text/javascript" src="polyfills.js"></script><script type="text/javascript" src="styles.js"></script><script type="text/javascript" src="scripts.js"></script><script type="text/javascript" src="vendor.js"></script><script type="text/javascript" src="main.js"></script></body>
+
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+</html>
